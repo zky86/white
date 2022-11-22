@@ -1,7 +1,7 @@
 package com.evan.wj.controller;
 
 import com.evan.wj.pojo.User;
-import com.evan.wj.result.Result;
+import com.evan.wj.common.Result;
 import com.evan.wj.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,9 +23,9 @@ public class LoginController {
 
         User user = userService.get(username, requestUser.getPassword());
         if (null == user) {
-            return new Result(400);
+            return new Result(400, "错误", "");
         } else {
-            return new Result(200);
+            return new Result(200, "成功", "admin");
         }
     }
 }
