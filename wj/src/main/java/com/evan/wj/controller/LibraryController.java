@@ -6,7 +6,12 @@ import com.evan.wj.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
+
+import com.evan.wj.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 public class LibraryController {
@@ -38,5 +43,28 @@ public class LibraryController {
             return list();
         }
     }
+
+    @CrossOrigin
+    @PostMapping("api/covers")
+    public String coversUpload(MultipartFile file) throws Exception {
+        String folder = "D:/workspace/img";
+        File imageFolder = new File(folder);
+//        File f = new File(imageFolder, StringUtils.getRandomString(6) + file.getOriginalFilename()
+//                .substring(file.getOriginalFilename().length() - 4));
+        File f = new File(imageFolder, file.getOriginalFilename());
+
+        if (!f.getParentFile().exists())
+            f.getParentFile().mkdirs();
+        try {
+            file.transferTo(f);
+//            String imgURL = "http://localhost:8443/api/file/" + f.getName();
+            String imgURL = "http://localhost:8443/api/file/" + file.getOriginalFilename();
+            return imgURL;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "";
+        }
+    }
+
 }
 
